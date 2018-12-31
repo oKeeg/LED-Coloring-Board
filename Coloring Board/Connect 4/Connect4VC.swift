@@ -279,6 +279,8 @@ class Connect4VC: UIViewController, UICollectionViewDelegate, UICollectionViewDa
         playingAgainstLabel.isHidden = true
         pickerView.isHidden = true
     }
+    @IBAction func pressedFillBucket(_ sender: UIButton) {
+    }
     func reloadView() {
         serial.delegate = self
         serial.sendMessageToDevice("z\n")

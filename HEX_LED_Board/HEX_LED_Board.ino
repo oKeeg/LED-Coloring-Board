@@ -1,13 +1,23 @@
 #include <FastLED.h>
 FASTLED_USING_NAMESPACE
 #define NUM_LEDS 88
-#define DATA_PIN 3             //6 on orange box
+#define DATA_PIN 3             
 CRGB leds[NUM_LEDS];
 const byte maxChars = 150;
 char receivedChars[maxChars];
 String h;
 String s;
 String v;
+String r;
+String b;
+String g;
+
+bool fadingColors = false;
+bool changeColor = true;
+double fadeCounter = 255;
+
+bool movingRainbow = false;
+
 boolean newData = false;
 String PlayAnimation = "";
 char *strings[4];
@@ -24,6 +34,12 @@ void setup() {
 
 void loop() {
   recvWithEndMarker();
+  if(fadingColors){
+    fadeColors(6);
+  }
+  if(movingRainbow){
+    MoveRainbow();
+  }
   showNewData();
 }
 void recvWithEndMarker() {
@@ -45,11 +61,14 @@ void recvWithEndMarker() {
       }
       Serial.println("");
       letter = 0;
+      fadingColors = false;
+      movingRainbow = false;
       if (String(receivedChars[0]) == "z") {
         for(int i = 0; i < NUM_LEDS; i++){
           leds[i].setRGB(0,0,0);
         }
         FastLED.show();
+        
         Serial.println("Cleared!");
         memset(receivedChars, 0, sizeof(receivedChars));
         memset(strings, 0, sizeof(strings));
@@ -57,9 +76,7 @@ void recvWithEndMarker() {
       }
       if (String(receivedChars[0]) == "P") { //if first two letters equal f(fade color)
         repeatSteps();
-        Serial.print("NUM of LED: ");
         int ledNum = atoi(strings[0]);
-        Serial.println(ledNum);
         float hue = strtod(strings[1],NULL);
         float sat = atof(strings[2]);
         float vib = strtod(strings[3],NULL);
@@ -67,30 +84,76 @@ void recvWithEndMarker() {
         hue = hue*255;
         sat = sat*255;
         vib = vib*255;
-
-        Serial.println("RANDOM STRINGS 123::");
-        Serial.println(strings[1]);
-        Serial.println(strings[2]);
-        Serial.println(strings[3]);
-        Serial.print("HUE: ");
-        Serial.println(hue); 
-        Serial.print("Sat: ");
-        Serial.println(sat); 
-        Serial.print("BRI: ");
-        Serial.println(vib);
         
         leds[ledNum].setHSV(hue,sat, vib);     
-//        FastLED.setBrightness(255);
         FastLED.show();
-//        setPixel(strings[1],strings[2],strings[3], strings[0]);
         showNewData();
         Serial.println("Done!");
         memset(receivedChars, 0, sizeof(receivedChars));
         memset(strings, 0, sizeof(strings));
         index = 0;
-      }
+      } else if(String(receivedChars[0]) == "A"){ // A stands for Animation
+        if(String(receivedChars[2]) == "0"){ // Finds row clicked on tableView and does the animation (Fade Random Colors)
+          fadeCounter = 255;
+          changeColor = true;
+          Serial.println("Fading");
+          fadingColors = true;
+        }
+        if(String(receivedChars[2]) == "1"){ // Moving Rainbow
+          movingRainbow = true;
+        }
+      }else if(String(receivedChars[0]) == "F"){ //Using fill bucket and fills whole screen
+      repeatSteps();
+        int ledNum = atoi(strings[0]);
+        float hue = strtod(strings[1],NULL);
+        float sat = atof(strings[2]);
+        float vib = strtod(strings[3],NULL);
+        hue = hue*255;
+        sat = sat*255;
+        vib = vib*255;
+        for(int i = 0; i < NUM_LEDS; i++){
+        leds[i].setHSV(hue,sat, vib);
+        }     
+        FastLED.show();
+        showNewData();
+        memset(receivedChars, 0, sizeof(receivedChars));
+        memset(strings, 0, sizeof(strings));
+        index = 0;
     }
   }
+}
+}
+bool countDown = false;
+void fadeColors(double secs) {
+  if(changeColor){
+  r = random(255);
+  g = random(255);
+  b = random(255);
+  changeColor = false;
+  }
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i].setRGB( r.toInt(),g.toInt(), b.toInt());
+  }
+  FastLED.setBrightness(fadeCounter);
+  FastLED.show();
+  if(countDown == false){
+    fadeCounter -= (1 / (secs));
+    if (fadeCounter < 1) {
+        changeColor = true;
+        countDown = true;
+      }
+  }else {
+      fadeCounter += (1 / (secs));
+      if (fadeCounter > 254) {
+        countDown = false;
+      }
+    }
+}
+void MoveRainbow() {
+  uint8_t beatA = beatsin8(17, 0, 255);                        // Starting hue
+  uint8_t beatB = beatsin8(13, 0, 255);
+  fill_rainbow(leds, NUM_LEDS, (beatA + beatB) / 2, 8);
+  FastLED.show();
 }
 
 void showNewData() {
@@ -104,6 +167,7 @@ void showNewData() {
 void repeatSteps() {
   ptr = NULL;
   ptr = strtok(receivedChars, ",;");  // takes a list of delimiters
+  fadingColors = false;
   while (ptr != NULL)
   {
     if (index > 0) {
