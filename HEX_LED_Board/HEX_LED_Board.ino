@@ -18,6 +18,8 @@ double fadeCounter = 255;
 
 bool movingRainbow = false;
 
+bool gradualFill = false;
+
 boolean newData = false;
 String PlayAnimation = "";
 char *strings[4];
@@ -39,6 +41,9 @@ void loop() {
   }
   if(movingRainbow){
     MoveRainbow();
+  }
+  if(gradualFill){
+    Gradual();
   }
   showNewData();
 }
@@ -63,6 +68,7 @@ void recvWithEndMarker() {
       letter = 0;
       fadingColors = false;
       movingRainbow = false;
+      gradualFill = false;
       if (String(receivedChars[0]) == "z") {
         for(int i = 0; i < NUM_LEDS; i++){
           leds[i].setRGB(0,0,0);
@@ -101,6 +107,9 @@ void recvWithEndMarker() {
         }
         if(String(receivedChars[2]) == "1"){ // Moving Rainbow
           movingRainbow = true;
+        }
+        if(String(receivedChars[2]) == "2"){ // GradualFill
+          gradualFill = true;
         }
       }else if(String(receivedChars[0]) == "F"){ //Using fill bucket and fills whole screen
       repeatSteps();
@@ -153,6 +162,17 @@ void MoveRainbow() {
   uint8_t beatA = beatsin8(17, 0, 255);                        // Starting hue
   uint8_t beatB = beatsin8(13, 0, 255);
   fill_rainbow(leds, NUM_LEDS, (beatA + beatB) / 2, 8);
+  FastLED.show();
+}
+void Gradual() {
+  uint8_t starthue = beatsin8(5, 0, 255);
+  uint8_t endhue = beatsin8(7, 0, 255);
+
+  if (starthue < endhue) {
+    fill_gradient(leds, NUM_LEDS, CHSV(starthue, 255, 255), CHSV(endhue, 255, 255), FORWARD_HUES); // If we don't have this, the colour fill will flip around.
+  } else {
+    fill_gradient(leds, NUM_LEDS, CHSV(starthue, 255, 255), CHSV(endhue, 255, 255), BACKWARD_HUES);
+  }
   FastLED.show();
 }
 
