@@ -310,23 +310,24 @@ BluetoothSerialDelegate, UICollectionViewDataSource, UICollectionViewDelegate, U
         }
     }
     @IBAction func pressedUndo(_ sender: UIButton) {
-        
-        if(lastUsedCell.indices.contains(0)){
-            let indexPath = IndexPath(row: Int(lastUsedCell.last![0])!, section: 0)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-            
-            let HUE = NumberFormatter().number(from: lastUsedCell.last![1])
-            let SAT = NumberFormatter().number(from: lastUsedCell.last![2])
-            let BRI = NumberFormatter().number(from: lastUsedCell.last![3])
-            
-            cell.backgroundColor = UIColor(hue: CGFloat(HUE!), saturation: CGFloat(SAT!), brightness: CGFloat(BRI!), alpha: 1)
-            collectionViewPallet.reloadData()
-            
-            serial.sendMessageToDevice("P;\(lastUsedCell.last![0]);\(lastUsedCell.last![1]);\(lastUsedCell.last![2]);\(lastUsedCell.last![3])\n")
-            lastUsedCell.removeLast()
-        }else{
-            print("There is no more to undo")
-        }
+//
+//        if(lastUsedCell.indices.contains(0)){
+//
+//            let indexPath = IndexPath(row: Int(lastUsedCell.last![0])!, section: 0)
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+//
+//            let HUE = NumberFormatter().number(from: lastUsedCell.last![1])
+//            let SAT = NumberFormatter().number(from: lastUsedCell.last![2])
+//            let BRI = NumberFormatter().number(from: lastUsedCell.last![3])
+//
+//            cell.backgroundColor = UIColor(hue: CGFloat(HUE!), saturation: CGFloat(SAT!), brightness: CGFloat(BRI!), alpha: 1)
+//            collectionViewPallet.reloadData()
+//
+//            serial.sendMessageToDevice("P;\(lastUsedCell.last![0]);\(lastUsedCell.last![1]);\(lastUsedCell.last![2]);\(lastUsedCell.last![3])\n")
+//            lastUsedCell.removeLast()
+//        }else{
+//            print("There is no more to undo")
+//        }
     }
     @IBAction func pressedEffectButton(_ sender: UIButton) {
         animateIn()

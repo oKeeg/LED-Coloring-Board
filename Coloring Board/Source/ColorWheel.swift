@@ -84,8 +84,7 @@ class ColorWheel: UIView {
             color = hueSaturationAtPoint(CGPoint(x: point.x*scale, y: point.y*scale))
         }
         
-        self.color = UIColor(hue: color.hue, saturation: color.saturation, brightness: self.brightness, alpha: 1.0)
-        
+        self.color = UIColor(hue: color.hue, saturation: color.saturation, brightness: self.brightness, alpha: 1.0)        
         delegate?.hueAndSaturationSelected(color.hue, saturation: color.saturation)
         drawIndicator()
     }
@@ -210,6 +209,7 @@ class ColorWheel: UIView {
         self.color = color
         self.brightness = brightness
         brightnessLayer.fillColor = UIColor(white: 0, alpha: 1.0-self.brightness).cgColor
+        
         point = pointAtHueSaturation(hue, saturation: saturation)
         drawIndicator()
     }

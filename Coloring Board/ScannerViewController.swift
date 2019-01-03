@@ -122,6 +122,7 @@ final class ScannerViewController: UIViewController, UITableViewDataSource, UITa
     func serialIsReady(_ peripheral: CBPeripheral) {
         
         NotificationCenter.default.post(name: Notification.Name(rawValue: "reloadStartViewController"), object: self)
+        serial.sendMessageToDevice("z\n")
         dismiss(animated: true, completion: nil)
     }
     

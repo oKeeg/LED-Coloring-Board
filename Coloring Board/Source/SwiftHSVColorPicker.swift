@@ -11,8 +11,7 @@ import UIKit
 open class SwiftHSVColorPicker: UIView, ColorWheelDelegate, BrightnessViewDelegate {
     var colorWheel: ColorWheel!
     var brightnessView: BrightnessView!
-    var selectedColorView: SelectedColorView!
-
+    
     open var color: UIColor!
     var hue: CGFloat = 1.0
     var saturation: CGFloat = 1.0
@@ -56,10 +55,7 @@ open class SwiftHSVColorPicker: UIView, ColorWheelDelegate, BrightnessViewDelega
         
         let centeredX = (self.bounds.width - colorWheelSize) / 2.0
         
-        selectedColorView = SelectedColorView(frame: CGRect(x: centeredX, y:0, width: colorWheelSize, height: selectedColorViewHeight), color: self.color)
-        self.addSubview(selectedColorView)
-        
-        colorWheel = ColorWheel(frame: CGRect(x: centeredX, y: selectedColorView.frame.maxY, width: colorWheelSize, height: colorWheelSize), color: self.color)
+        colorWheel = ColorWheel(frame: CGRect(x: centeredX, y: 0, width: colorWheelSize, height: colorWheelSize), color: self.color)
         colorWheel.delegate = self
         self.addSubview(colorWheel)
         
@@ -73,8 +69,6 @@ open class SwiftHSVColorPicker: UIView, ColorWheelDelegate, BrightnessViewDelega
         self.saturation = saturation
         self.color = UIColor(hue: self.hue, saturation: self.saturation, brightness: self.brightness, alpha: 1.0)
         brightnessView.setViewColor(self.color)
-        selectedColorView.setViewColor(self.color)
- 
         if(colorWheel.hasTouched){
             HUE = String(format: "%.2f", hue)
             SAT = String(format: "%.2f", saturation)
@@ -88,6 +82,6 @@ open class SwiftHSVColorPicker: UIView, ColorWheelDelegate, BrightnessViewDelega
         self.color = UIColor(hue: self.hue, saturation: self.saturation, brightness: self.brightness, alpha: 1.0)
         colorWheel.setViewBrightness(brightness)
         BRI = String(format: "%.2f", brightness)
-        selectedColorView.setViewColor(self.color)
+//        selectedColorView.setViewColor(self.color)
     }
 }

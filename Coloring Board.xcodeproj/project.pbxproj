@@ -11,7 +11,6 @@
 		8328174F21D54902000307D6 /* BrightnessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F824D221C8492000A3C01F /* BrightnessView.swift */; };
 		8328175021D54908000307D6 /* ColorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F824D321C8492000A3C01F /* ColorUtils.swift */; };
 		8328175121D54908000307D6 /* ColorWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F824D521C8492000A3C01F /* ColorWheel.swift */; };
-		8328175221D54908000307D6 /* SelectedColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F824D621C8492000A3C01F /* SelectedColorView.swift */; };
 		8328175521D549B2000307D6 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8328175421D549B2000307D6 /* CollectionViewCell.swift */; };
 		8328175721D54A3D000307D6 /* Connect4VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8328175621D54A3D000307D6 /* Connect4VC.swift */; };
 		833FE7D321C48F8D00024EAF /* CVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FE7D221C48F8D00024EAF /* CVCell.swift */; };
@@ -42,7 +41,6 @@
 		83F824D321C8492000A3C01F /* ColorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorUtils.swift; sourceTree = "<group>"; };
 		83F824D421C8492000A3C01F /* SwiftHSVColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftHSVColorPicker.swift; sourceTree = "<group>"; };
 		83F824D521C8492000A3C01F /* ColorWheel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorWheel.swift; sourceTree = "<group>"; };
-		83F824D621C8492000A3C01F /* SelectedColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedColorView.swift; sourceTree = "<group>"; };
 		FA5AB9651B77A30E007443C8 /* Serial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Serial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA5AB9691B77A30F007443C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA5AB96A1B77A30F007443C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,7 +87,6 @@
 				83F824D221C8492000A3C01F /* BrightnessView.swift */,
 				83F824D321C8492000A3C01F /* ColorUtils.swift */,
 				83F824D521C8492000A3C01F /* ColorWheel.swift */,
-				83F824D621C8492000A3C01F /* SelectedColorView.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -248,7 +245,6 @@
 				8328175021D54908000307D6 /* ColorUtils.swift in Sources */,
 				8328175121D54908000307D6 /* ColorWheel.swift in Sources */,
 				8328175721D54A3D000307D6 /* Connect4VC.swift in Sources */,
-				8328175221D54908000307D6 /* SelectedColorView.swift in Sources */,
 				8328174E21D54902000307D6 /* SwiftHSVColorPicker.swift in Sources */,
 				8328174F21D54902000307D6 /* BrightnessView.swift in Sources */,
 				FA5AB98B1B77A398007443C8 /* BluetoothSerial.swift in Sources */,

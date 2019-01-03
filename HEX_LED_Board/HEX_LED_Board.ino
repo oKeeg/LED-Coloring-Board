@@ -12,6 +12,7 @@ String r;
 String b;
 String g;
 
+bool countDown = false;
 bool fadingColors = false;
 bool changeColor = true;
 double fadeCounter = 255;
@@ -19,6 +20,7 @@ double fadeCounter = 255;
 bool movingRainbow = false;
 
 bool gradualFill = false;
+bool hasConnected = false;
 
 boolean newData = false;
 String PlayAnimation = "";
@@ -32,9 +34,31 @@ void setup() {
   Serial.println("Working!!");
   LEDS.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
   FastLED.setBrightness(255);
+  delay(750);
+  for(int i = 0; i < NUM_LEDS; i++){
+    leds[i].setRGB(0,0,255);
+  }
+  FastLED.show();
 }
 
 void loop() {
+  if(hasConnected == false){
+  searchForConnection();
+  FastLED.show();
+  if(countDown == false){
+    fadeCounter -= 2;
+    Serial.println(fadeCounter);
+    if (fadeCounter < 50) {
+        countDown = true;
+      }
+  }else {
+      fadeCounter += 2;
+      if (fadeCounter > 250) {
+        countDown = false;
+      }
+      Serial.println("countung up");
+    }
+  }
   recvWithEndMarker();
   if(fadingColors){
     fadeColors(6);
@@ -54,6 +78,7 @@ void recvWithEndMarker() {
   if (Serial.available() > 0) {
     rc = Serial.read();
     if (rc != endMarker) {
+      hasConnected = true;
       receivedChars[letter] = rc;
       letter++;
       if (letter >= maxChars) {
@@ -86,12 +111,22 @@ void recvWithEndMarker() {
         float hue = strtod(strings[1],NULL);
         float sat = atof(strings[2]);
         float vib = strtod(strings[3],NULL);
-
         hue = hue*255;
-        sat = sat*255;
-        vib = vib*255;
         
-        leds[ledNum].setHSV(hue,sat, vib);     
+        if(sat > 1){
+          sat = 255;
+        }else if(sat < 1 && sat > 0.7){
+          sat = 190;
+        }else if(sat < 0.7 && sat > 0.4){
+          sat = 100;
+        }else{
+          sat = 0;
+        }
+        vib = vib*255;
+        leds[ledNum].setHSV(hue,sat, vib); 
+        if(hue > 165 && hue < 175){
+          leds[ledNum].setRGB(0,0,255);
+        }    
         FastLED.show();
         showNewData();
         Serial.println("Done!");
@@ -118,11 +153,24 @@ void recvWithEndMarker() {
         float sat = atof(strings[2]);
         float vib = strtod(strings[3],NULL);
         hue = hue*255;
-        sat = sat*255;
+        if(sat > 1){
+          sat = 255;
+        }else if(sat < 1 && sat > 0.7){
+          sat = 190;
+        }else if(sat < 0.7 && sat > 0.4){
+          sat = 100;
+        }else{
+          sat = 0;
+        }
         vib = vib*255;
         for(int i = 0; i < NUM_LEDS; i++){
         leds[i].setHSV(hue,sat, vib);
-        }     
+        }
+        if(hue > 165 && hue < 175){
+          for(int i = 0; i < NUM_LEDS; i++){ // blue color broken so manually set blue with rgb
+        leds[i].setRGB(0,0,255);
+        }
+        }         
         FastLED.show();
         showNewData();
         memset(receivedChars, 0, sizeof(receivedChars));
@@ -132,7 +180,6 @@ void recvWithEndMarker() {
   }
 }
 }
-bool countDown = false;
 void fadeColors(double secs) {
   if(changeColor){
   r = random(255);
@@ -197,3 +244,32 @@ void repeatSteps() {
     ptr = strtok(NULL, ",;");  // takes a list of delimiters
   }
 }
+
+void searchForConnection(){
+  leds[13].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[14].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[15].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[16].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[17].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[18].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[19].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[20].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[24].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[28].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[31].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[35].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[39].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[42].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[46].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[50].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[53].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[57].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[61].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[64].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[69].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[70].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[71].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[73].setRGB(20, round(fadeCounter), round(fadeCounter));
+  leds[74].setRGB(20, round(fadeCounter), round(fadeCounter));
+}
+
