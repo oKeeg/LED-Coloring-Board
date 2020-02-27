@@ -51,6 +51,7 @@ BluetoothSerialDelegate, UICollectionViewDataSource, UICollectionViewDelegate, U
     let items = [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87"]
     
     var palletItems: [[String]] = [["0.32", "1.07", "1"]]
+    var tileData: [String] = ["0.32", "1.07", "1"]
     let tableViewAnimations = ["Fade Color", "Breathing Rainbow", "Moving Rainbow"]
     
     override func viewDidLoad() {
@@ -62,6 +63,10 @@ BluetoothSerialDelegate, UICollectionViewDataSource, UICollectionViewDelegate, U
         collectionView.transform = CGAffineTransform(scaleX: 1, y: -1)
         tableView.dataSource = self
         tableView.delegate = self
+        palletItems.removeAll()
+        for _ in 0...items.count{
+            tileData.append("1.32, 1.07, 1")
+        }
         loadUIView()
         reloadView()
     }
@@ -108,7 +113,7 @@ BluetoothSerialDelegate, UICollectionViewDataSource, UICollectionViewDelegate, U
         }
         blurView.isUserInteractionEnabled = false
     }
-    func reloadView() {
+    @objc func reloadView() {
         serial.delegate = self
         
         if serial.isReady {
@@ -233,6 +238,8 @@ BluetoothSerialDelegate, UICollectionViewDataSource, UICollectionViewDelegate, U
                     print("sent filled")
                 }
                 
+            }else{
+                tileData[indexPath.row] = "\(NumberFormatter().number(from: currentHue) as! CGFloat), \(NumberFormatter().number(from: currentSat) as! CGFloat), \(NumberFormatter().number(from: currentBri) as! CGFloat)"
             }
             print("HUE \(currentHue), SAT \(currentSat), BRI \(currentBri), Cell \(indexPath.row)")
         }
@@ -338,5 +345,6 @@ BluetoothSerialDelegate, UICollectionViewDataSource, UICollectionViewDelegate, U
     @IBAction func savePicture(_ sender: UIButton) {
     }
     @IBAction func loadPicture(_ sender: UIButton) {
+        print(tileData)
     }
 }

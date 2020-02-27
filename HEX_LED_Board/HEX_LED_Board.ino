@@ -34,30 +34,11 @@ void setup() {
   Serial.println("Working!!");
   LEDS.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
   FastLED.setBrightness(255);
-  delay(750);
-  for(int i = 0; i < NUM_LEDS; i++){
-    leds[i].setRGB(0,0,255);
-  }
-  FastLED.show();
 }
 
 void loop() {
   if(hasConnected == false){
-  searchForConnection();
-  FastLED.show();
-  if(countDown == false){
-    fadeCounter -= 2;
-    Serial.println(fadeCounter);
-    if (fadeCounter < 50) {
-        countDown = true;
-      }
-  }else {
-      fadeCounter += 2;
-      if (fadeCounter > 250) {
-        countDown = false;
-      }
-      Serial.println("countung up");
-    }
+
   }
   recvWithEndMarker();
   if(fadingColors){
@@ -121,6 +102,9 @@ void recvWithEndMarker() {
           sat = 100;
         }else{
           sat = 0;
+        }
+        if(hue > 255){
+          hue = 255;
         }
         vib = vib*255;
         leds[ledNum].setHSV(hue,sat, vib); 
@@ -241,35 +225,8 @@ void repeatSteps() {
       strings[index - 1] = ptr;
     }
     index++;
+    Serial.println("Strings index-1");
+    Serial.println(strings[index -1]);
     ptr = strtok(NULL, ",;");  // takes a list of delimiters
   }
 }
-
-void searchForConnection(){
-  leds[13].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[14].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[15].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[16].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[17].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[18].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[19].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[20].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[24].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[28].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[31].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[35].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[39].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[42].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[46].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[50].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[53].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[57].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[61].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[64].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[69].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[70].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[71].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[73].setRGB(20, round(fadeCounter), round(fadeCounter));
-  leds[74].setRGB(20, round(fadeCounter), round(fadeCounter));
-}
-
